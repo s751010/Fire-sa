@@ -32,6 +32,14 @@ const CHECK_ITEMS: CheckItem[] = [
   { key: 'no_damage', label: 'لا يوجد تلف', description: 'لا خدوش أو صدأ أو تلف ظاهري' },
 ]
 
+const HOSE_CHECK_ITEMS: CheckItem[] = [
+  { key: 'pressure_ok', label: 'اختبار الضغط سليم', description: 'الخرطوم يتحمل الضغط بدون تسريب' },
+  { key: 'seal_intact', label: 'الوصلات سليمة', description: 'جميع الوصلات والتوصيلات محكمة' },
+  { key: 'label_readable', label: 'البطاقة مقروءة', description: 'التسمية وتاريخ الفحص واضحان' },
+  { key: 'pin_intact', label: 'البكرة / الصندوق سليم', description: 'البكرة تدور بسهولة والصندوق سليم' },
+  { key: 'no_damage', label: 'الخرطوم بدون تلف', description: 'لا تشققات أو تآكل أو تلف في الخرطوم' },
+]
+
 interface FireExtinguisher {
   id: string
   serial_number: string
@@ -101,7 +109,6 @@ export function InspectionForm({
       return
     }
 
-    // Update extinguisher status if needed
     if (overallStatus !== 'passed') {
       await supabase
         .from('fire_extinguishers')
@@ -124,8 +131,12 @@ export function InspectionForm({
     CO2: 'CO₂',
     foam: 'رغوة',
     water: 'ماء',
+    hose: 'خرطوم الحريق',
     other: 'أخرى',
   }
+
+  const isHose = extinguisher.type === 'hose'
+  const checkItems = isHose ? HOSE_CHECK_ITEMS : CHECK_ITEMS
 
   const resultConfig = {
     passed: { label: 'سليمة', color: 'bg-green-500', icon: CheckCircle },
@@ -189,7 +200,7 @@ export function InspectionForm({
           <h2 className="font-semibold text-gray-900">بنود الفحص</h2>
         </div>
         <div className="divide-y divide-gray-100">
-          {CHECK_ITEMS.map((item) => (
+          {checkItems.map((item) => (
             <div key={item.key} className="p-4">
               <div className="flex items-start justify-between gap-3">
                 <div className="flex-1 min-w-0">

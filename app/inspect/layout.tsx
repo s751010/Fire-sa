@@ -14,9 +14,12 @@ export default async function DashboardLayout({
     redirect('/login')
   }
 
+  const { data: profile } = await supabase
+    .from('profiles').select('role').eq('id', user.id).single()
+
   return (
     <div className="min-h-screen bg-gray-50">
-      <NavBar userEmail={user.email ?? ''} />
+      <NavBar userEmail={user.email ?? ''} userRole={profile?.role} />
       <main className="md:pr-64 pt-14 md:pt-0 pb-20 md:pb-0 min-h-screen">
         <div className="p-4 md:p-6 max-w-5xl mx-auto">
           {children}
