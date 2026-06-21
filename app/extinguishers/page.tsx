@@ -69,6 +69,7 @@ export default async function ExtinguishersPage({
     CO2: 'ثاني أكسيد الكربون',
     foam: 'رغوة',
     water: 'ماء',
+    hose: 'خرطوم الحريق',
     other: 'أخرى',
   }
 
